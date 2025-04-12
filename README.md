@@ -46,7 +46,7 @@
   - 窗口拖动
   - 最小化/最大化
 - 未来计划：窗口缩放功能
-- `/header` 中包含使用案例
+- `script/header` 中包含使用案例
 - `butterbutton` 仅生成按下事件报告
 
 ### `SearchUi`
