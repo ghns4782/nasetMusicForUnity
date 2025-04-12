@@ -30,6 +30,8 @@
 ### `NewBehaviourScript`
 - 仅用于测试目的
 - 包含自动实例化的 `NeteaseMusic` 类
+- 目前需要使用该类下检查器中的`加密显示`按钮来进行扫码，更改的为/canvas/RawImage中的image作为显示,`ondestory`按钮为停止登陆
+- 其余方法各位自行猜测与查看
 
 ### `PorjectAudioPlayer`
 - 播放指定网络地址的音频
