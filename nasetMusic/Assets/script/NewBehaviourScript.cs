@@ -10,6 +10,7 @@ using System.Threading;
 using System;
 using System.IO;
 using Newtonsoft.Json;
+using HtmlAgilityPack;
 public class NewBehaviourScript : MonoBehaviour
 {
     public Image image;
@@ -105,10 +106,12 @@ public class NewBehaviourScript : MonoBehaviour
     }
     public string serchname;
     public Result song;
+    public PlayList ascas;
     [Button]
-    public async Task search()
+    public async void search()
     {
-        song = await netease.search.searchSong(serchname);
+        var a= await netease.search.GetplayList("405849034");
+        ascas = a;
         //string folderPath = Path.Combine(Application.persistentDataPath, "JsonData");
         //string filePath = Path.Combine(folderPath, "songs.json");
 
@@ -118,8 +121,8 @@ public class NewBehaviourScript : MonoBehaviour
         //    Directory.CreateDirectory(folderPath);
         //}
 
-        //// 写入 JSON 数据到文件
-        //File.WriteAllText(filePath, json);
+        ////// 写入 JSON 数据到文件
+        //File.WriteAllText(filePath, a);
 
         //Debug.Log($"JSON 文件已保存到: {filePath}");
 

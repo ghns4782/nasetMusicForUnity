@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Diagnostics;
 using UnityEngine;
+using System.IO;
+using System.Text;
 //for unity 
 //namespace NeteaseMusicAPI
 //{
@@ -128,12 +130,14 @@ namespace NeteaseMusicAPI
         public async Task<string> GetAsync(string Url, bool needCsrfToken = false, bool needCookies = false)
         {
             using var request = new HttpRequestMessage(HttpMethod.Get, Url);
-            SetRequestHeaders(request, needCookies);
             UnityEngine.Debug.Log("请求开始");
             var response = await _httpClient.SendAsync(request);
             response.EnsureSuccessStatusCode();
 
-            return await response.Content.ReadAsStringAsync();
+            // 使用 Stream 读取并手动指定 UTF-8 编码
+            using var stream = await response.Content.ReadAsStreamAsync();
+            using var reader = new StreamReader(stream, Encoding.UTF8);
+            return await reader.ReadToEndAsync();
         }
         public async Task<(string json, Dictionary<string, string> headers)> GetAsyncWithHeader(string Url, bool needCsrfToken = false, bool needCookies = false)
         {
@@ -222,8 +226,10 @@ namespace NeteaseMusicAPI
         private void SetRequestHeaders(HttpRequestMessage request, bool needCookies)
         {
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-            request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-
+            if(request.Method == HttpMethod.Post)
+            {
+                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+            }
             if (needCookies&& Api.login.TryGetCookie(out string cookie))
             {
                 request.Headers.Add("Cookie", cookie);

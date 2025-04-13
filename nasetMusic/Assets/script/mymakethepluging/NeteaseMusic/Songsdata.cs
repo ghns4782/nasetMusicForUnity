@@ -168,6 +168,9 @@ public partial class Privilege
     [JsonProperty("downloadMaxBrLevel")]
     [JsonConverter(typeof(StringEnumConverter))]
     public AudioLevel downloadMaxBrLevel;
+
+    [JsonProperty("id")]
+    public string songid;
 }
 [System.Serializable]
 public partial class SongData
@@ -216,4 +219,83 @@ public enum AudioLevel
     // 处理未知值
     [JsonProperty("unknown")]
     Unknown
+}
+[System.Serializable]
+public class playLsitCallback
+{
+    [JsonProperty("code")]
+    public string code;
+
+    [JsonProperty("playlist")]
+    public PlayList plsylist;
+
+    [JsonProperty("privileges")]
+    public Privilege[] privileges;
+    public void MergePrivileges()
+    {
+        if (this?.privileges == null || this.plsylist?.Songs == null)
+            return;
+
+        // 将 privileges 转换为字典（key: SongId, value: Privilege）
+        var privilegeDict = this.privileges
+            .Where(p => !string.IsNullOrEmpty(p.songid))
+            .ToDictionary(p => p.songid);
+
+        // 遍历 Songs，匹配并合并 Privilege
+        foreach (var song in this.plsylist.Songs)
+        {
+            if (privilegeDict.TryGetValue(song.Id, out var privilege))
+            {
+                song.privilege = privilege;
+            }
+        }
+    }
+}
+[System.Serializable]
+public class PlayList
+{
+    /// <summary>
+    /// 歌单id
+    /// </summary>
+    [JsonProperty("id")]
+    public string ListId;
+    /// <summary>
+    /// 歌单名称
+    /// </summary>
+    [JsonProperty("name")]
+    public string ListName;
+    /// <summary>
+    /// 歌单封面
+    /// </summary>
+    [JsonProperty("coverImgUrl")]
+    public string imgURL;
+    /// <summary>
+    /// 创建者id
+    /// </summary>
+    [JsonProperty("userId")]
+    public string CreaterUserId;
+    /// <summary>
+    /// 歌曲数量
+    /// </summary>
+    [JsonProperty("trackCount")]
+    public string ListCount;
+    /// <summary>
+    /// 部分歌曲信息
+    /// </summary>
+    [JsonProperty("tracks")]
+    public Song[] Songs;
+    /// <summary>
+    /// 所有歌曲的id
+    /// </summary>
+    [JsonProperty("trackIds")]
+    public SockerSong[] sockersong;
+}
+[System.Serializable]
+public class SockerSong
+{
+    /// <summary>
+    /// 格局id
+    /// </summary>
+    [JsonProperty("id")]
+    public string SongId;
 }

@@ -1,3 +1,4 @@
+using HtmlAgilityPack;
 using NeteaseMusicAPI;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -99,6 +100,37 @@ public class Search
         return maxBrLevel;
     }
     /// <summary>
+    /// 获取歌单信息
+    /// </summary>
+    /// <param name="ListId"></param>
+    /// <returns></returns>
+    public async Task<PlayList> GetplayList(string ListId)
+    {
+        string json = await Api.netWork.PostAsync("https://music.163.com/weapi/v6/playlist/detail?csrf_token=" + Api.login.TryGetCsrf(),
+               new
+               {
+                   id = ListId,
+                   offset = 0,
+                   total = true,
+                   limit = 1000,
+                   n=1000,
+                   csrf_token = Api.login.TryGetCsrf()
+               },
+               needCookies: true
+            );
+        playLsitCallback ascas = JsonConvert.DeserializeObject<playLsitCallback>(json);
+        if (ascas.code == "200")
+        {
+            ascas.MergePrivileges();
+            return ascas.plsylist;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
     /// 获取歌曲详细信息
     /// </summary>
     /// <param name="songId"></param>
@@ -152,6 +184,7 @@ public class Search
         songData.Songs[0].setapi(Api: Api);
         return songData.Songs[0];
     }
+
     public Result ConvertJsonToSongsData(string json)
     {
         // Configure JsonSerializerSettings if needed
@@ -225,7 +258,9 @@ https://music.163.com/weapi/user/playlist?csrf_token=
 */
 /*
 指定歌单的歌曲信息
+
 https://music.163.com/weapi/v6/playlist/detail?csrf_token=
+https://music.163.com/weapi/v1/play/record?csrf_token=
 传入
 {"id":"2154103709","offset":"0","total":"true","limit":"1000","n":"1000","csrf_token":""}
 非用户创建
