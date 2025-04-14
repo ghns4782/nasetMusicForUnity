@@ -299,3 +299,55 @@ public class SockerSong
     [JsonProperty("id")]
     public string SongId;
 }
+[Serializable]
+public class likeCallBack
+{
+    [JsonProperty("code")]
+    public string code;
+
+    [JsonProperty("playlist")]
+    public PlayListMessage[] playlist;
+}
+[Serializable]
+public class PlayListMessage
+{
+    [JsonProperty("name")]
+    public string listname;
+
+    [JsonProperty("id")]
+    public string ListId;
+
+    [JsonProperty("coverImgUrl")]
+    public string imageUrl;
+
+    [JsonProperty("playCount")]
+    public string playcount;
+
+    [JsonProperty("trackCount")]
+    public string trackcount;
+
+    [JsonProperty("createTime")]
+    public string createTime;
+
+    [JsonProperty("updateTime")]
+    public string updateTime;
+
+    [JsonProperty("creator")]
+    public UserMessage creater;
+}
+[Serializable]
+public class UserMessage
+{
+    [JsonProperty("nickname")]
+    public string UserName;
+
+    [JsonProperty("avatarUrl")]
+    public string avatarUrl;
+
+    [JsonProperty("backgroundUrl")]
+    public string backgroundUrl;
+
+    [JsonProperty("userId")]
+    public string userId;
+
+}

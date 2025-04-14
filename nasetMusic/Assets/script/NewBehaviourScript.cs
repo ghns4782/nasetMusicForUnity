@@ -6,11 +6,7 @@ using System.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine.UI;
 using NeteaseMusicAPI;
-using System.Threading;
-using System;
 using System.IO;
-using Newtonsoft.Json;
-using HtmlAgilityPack;
 public class NewBehaviourScript : MonoBehaviour
 {
     public Image image;
@@ -105,7 +101,6 @@ public class NewBehaviourScript : MonoBehaviour
         netease.login.CancelOperation();
     }
     public string serchname;
-    public Result song;
     public PlayList ascas;
     [Button]
     public async void search()
@@ -114,18 +109,22 @@ public class NewBehaviourScript : MonoBehaviour
         ascas = a;
         //string folderPath = Path.Combine(Application.persistentDataPath, "JsonData");
         //string filePath = Path.Combine(folderPath, "songs.json");
-
         //// 如果目录不存在，则创建
         //if (!Directory.Exists(folderPath))
         //{
         //    Directory.CreateDirectory(folderPath);
         //}
-
         ////// 写入 JSON 数据到文件
         //File.WriteAllText(filePath, a);
-
         //Debug.Log($"JSON 文件已保存到: {filePath}");
+    }
 
+    public likeCallBack userlikecallback;
+    [Button]
+
+    public async void GetUserlike()
+    {
+        userlikecallback = await netease.search.GetUserLike("1408203055");
     }
     [Button]
     public async Task getsong()

@@ -9,6 +9,7 @@ using System.Diagnostics;
 using UnityEngine;
 using System.IO;
 using System.Text;
+using Newtonsoft.Json;
 //for unity 
 //namespace NeteaseMusicAPI
 //{
@@ -219,6 +220,7 @@ namespace NeteaseMusicAPI
 
             return await response.Content.ReadAsStringAsync();
         }
+
 
         /// <summary>
         /// ÃÌº”«Î«ÛÕ∑

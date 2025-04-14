@@ -1,4 +1,3 @@
-using HtmlAgilityPack;
 using NeteaseMusicAPI;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -58,7 +57,7 @@ public class Search
         return ConvertJsonToSongsData(json);
     }
     /// <summary>
-    /// 获取歌单
+    /// 搜索歌单
     /// </summary>
     /// <param name="searchName"></param>
     /// <param name="searchLong"></param>
@@ -86,13 +85,13 @@ public class Search
     public async Task<string> GetSongAsync(string id, AudioLevel Level)
     {
         var json = await Api.netWork.PostAsync("https://music.163.com/weapi/song/enhance/player/url/v1?csrf_token="+ Api.login.TryGetCsrf(),
-           new
-           {
-               ids = $"[{id}]",
-               level = Level.ToString().ToLower(),
-               encodeType = "mp3",
-               csrf_token = Api.login.TryGetCsrf()
-           },
+               new
+               {
+                   ids = $"[{id}]",
+                   level = Level.ToString().ToLower(),
+                   encodeType = "mp3",
+                   csrf_token = Api.login.TryGetCsrf()
+               },
            needCookies:true
            );
         var jsonObj = JObject.Parse(json);
@@ -149,6 +148,29 @@ public class Search
 
         return ConvertJsonToSongData(json);
     }
+    public async Task<likeCallBack> GetUserLike(string UserId)
+    {
+        var json = await Api.netWork.PostAsync("https://music.163.com/weapi/user/playlist?csrf_token=" + Api.login.TryGetCsrf(),
+            new
+            {
+                offset = 0,
+                limit = 1001,
+                uid = UserId,
+                csrf_token = Api.login.TryGetCsrf()
+            },
+            needCookies: true
+            );
+        likeCallBack ascas = JsonConvert.DeserializeObject<likeCallBack>(json);
+        if (ascas.code == "200")
+        {
+            return ascas;
+        }
+        else
+        {
+            return null;
+        }
+    }
+    //{"offset":"0","limit":"1001","uid":"1408203055","csrf_token":""}
     public async Task<string> GetSongUrl(Song songData, AudioLevel level = AudioLevel.Standard)
     {
         var json = await Api.search.GetSongAsync(songData.Id.ToString(), songData.ClampToMax(level));
