@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: b9f56198b2fbd6043a1c435fb9c57d37, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -283,9 +283,9 @@ GameObject:
   - component: {fileID: 5955383683782436751}
   - component: {fileID: 406348713102719784}
   - component: {fileID: 1700875391976774219}
-  - component: {fileID: 2110869932286584869}
   - component: {fileID: 1648349517555470996}
-  - component: {fileID: 4475118110211051429}
+  - component: {fileID: 6832055394349673489}
+  - component: {fileID: 5903374322110455049}
   m_Layer: 5
   m_Name: Button (Legacy)
   m_TagString: Untagged
@@ -333,15 +333,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Material: {fileID: 2100000, guid: 79801855ae455724896a962426ad5379, type: 2}
+  m_Color: {r: 0.9686275, g: 0.97647065, b: 0.98823535, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -351,21 +351,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 12.72
---- !u!114 &2110869932286584869
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4823710398665502242}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
-  m_EffectDistance: {x: 1, y: -1}
-  m_UseGraphicAlpha: 1
 --- !u!114 &1648349517555470996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,7 +368,9 @@ MonoBehaviour:
   songname: {fileID: 9178822259790580084}
   songArName: {fileID: 2541348462288122866}
   Alimage: {fileID: 858233829391113689}
---- !u!114 &4475118110211051429
+  shadow: {fileID: 5903374322110455049}
+  button: {fileID: 6832055394349673489}
+--- !u!114 &6832055394349673489
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -392,7 +379,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4823710398665502242}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1fcb44544ed7d154fbc5654df4ae0f3d, type: 3}
+  m_Script: {fileID: 11500000, guid: 865703a9b22c3b847b3aea3c5b943f3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -439,6 +426,33 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnClickdown:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClickEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClickExit:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClickUp:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &5903374322110455049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4823710398665502242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &7391897613336845789
 GameObject:
   m_ObjectHideFlags: 0

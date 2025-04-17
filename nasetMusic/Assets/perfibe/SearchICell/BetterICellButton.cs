@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -15,6 +16,8 @@ public class BetterICellButton : MonoBehaviour,ICell
     public Text songArName;
     public Image Alimage;
     private SearchUi map;
+    public Shadow shadow;
+    public betterButton button;
     public void OnBecomeInvisible(ScrollerPanelSide side)
     {
     }
@@ -24,13 +27,22 @@ public class BetterICellButton : MonoBehaviour,ICell
     }
     public void OnBecomeVisible(ScrollerPanelSide side)
     {
+        shadow.enabled = false;
+        button.OnClickEnter.AddListener( () =>
+        {
+            shadow.enabled = true;
+        });
+        button.OnClickExit.AddListener(() =>
+        {
+            shadow.enabled = false;
+        });
         Index.text = (songIndex+1).ToString();
         songArName.text = song.GetArtNames();
         songname.text = song.Name;
 
         map.GetSprite(song.Album.PicUrl, (Sprite) =>
         {
-            if (Alimage)
+            if (Alimage != null||Alimage == null)
             {
                 Alimage.sprite = Sprite;
             }

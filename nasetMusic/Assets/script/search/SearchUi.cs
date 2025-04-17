@@ -43,19 +43,47 @@ public class SearchUi : MonoBehaviour
             regularCell.SetSong(Songs[index]);
         });
     }
+    Queue<(string, Action<Sprite>)> queue=new Queue<(string, Action<Sprite>)>();
+    Coroutine Loodloop;
     public void GetSprite(string Url, Action<Sprite> OutText)
     {
-        StartCoroutine(GetUrlPicter(Url, OutText));
-    }
-    public IEnumerator GetUrlPicter(string Url,Action<Sprite> OutText)
-    {
-        if(maps.TryGetValue(Url,out Sprite sp))
+        if (maps.TryGetValue(Url, out Sprite sp))
         {
             OutText?.Invoke(sp);
         }
         else
         {
-            using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(Url))
+            Debug.Log("没找到");
+            if (Loodloop == null)
+            {
+                Debug.Log("启动队列");
+                queue.Enqueue((Url, OutText));
+                Loodloop = StartCoroutine(Looploadqueue());
+            }
+            else
+            {
+                Debug.Log("已有队列");
+                queue.Enqueue((Url, OutText));
+            }
+        }
+    }
+    public IEnumerator Looploadqueue()
+    {
+        using(BusyDisposableAction _ = new BusyDisposableAction(() =>
+        {
+            Loodloop = null;
+        }))
+        {
+            while (!(queue.Count <= 0))
+            {
+                Debug.Log("加载中");
+                yield return StartCoroutine(GetUrlPicter(queue.Dequeue()));
+            }
+        }
+    }
+    public IEnumerator GetUrlPicter((string Url,Action<Sprite> OutText) a)
+    {
+            using (UnityWebRequest webRequest = UnityWebRequestTexture.GetTexture(a.Url))
             {
                 yield return webRequest.SendWebRequest();
 
@@ -74,10 +102,21 @@ public class SearchUi : MonoBehaviour
                         new Rect(0, 0, texture.width, texture.height),
                         new Vector2(0.5f, 0.5f) // 轴心点居中
                     );
-                    maps[Url] = sprite;
-                    OutText?.Invoke(maps[Url]);
+                    maps[a.Url] = sprite;
+                    a.OutText?.Invoke(maps[a.Url]);
                 }
             }
-        }
+    }
+}
+public class BusyDisposableAction : IDisposable
+{
+    private Action _action;
+    public BusyDisposableAction(Action action)
+    {
+        _action = action;
+    }
+    public void Dispose()
+    {
+        _action.Invoke();
     }
 }

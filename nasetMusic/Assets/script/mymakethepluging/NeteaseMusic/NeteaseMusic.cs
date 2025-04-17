@@ -48,9 +48,9 @@ namespace NeteaseMusicAPI
         /// <summary>
         /// 扫码登陆onQrCodeGenerated这个时间会在得到二维码的时候吧png返回回来，OutManage只是用于你检查的返回信息
         /// </summary>
-        public void willbe(Action<byte[]> onQrCodeGenerated, Action<string> OutManage = null)
+        public void willbe(Action<byte[]> onQrCodeGenerated, Action<string> OutManage = null, Action isOk = null)
         {
-            login.willbe(onQrCodeGenerated, OutManage);
+            login.willbe(onQrCodeGenerated, OutManage,isOk);
         }
         /// <summary>
         /// 停止扫码登陆

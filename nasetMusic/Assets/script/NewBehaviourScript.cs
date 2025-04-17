@@ -33,6 +33,10 @@ public class NewBehaviourScript : MonoBehaviour
     {
         image = GetComponent<Image>();
         LoadCookiesFromFile();
+        if(!netease.GetCookies(out string cookie))
+        {
+            CryptoVas();
+        }
     }
     [Button]
     void clear()
@@ -92,6 +96,10 @@ public class NewBehaviourScript : MonoBehaviour
             },
             (loge) => {
                 Debug.Log(loge);
+            },
+            () =>
+            {
+                SaveCookiesToFile();
             }
             );
     }

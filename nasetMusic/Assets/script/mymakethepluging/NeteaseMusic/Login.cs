@@ -40,7 +40,7 @@ namespace NeteaseMusicAPI
         /// <summary>
         /// 二维码网络请求cookie
         /// </summary>
-        public async void willbe(Action<byte[]> onQrCodeGenerated, Action<string> OutManage =null)
+        public async void willbe(Action<byte[]> onQrCodeGenerated, Action<string> OutManage =null,Action isOk=null)
         {
             if (isloging)
             {
@@ -50,7 +50,7 @@ namespace NeteaseMusicAPI
             _cancellationTokenSource = new CancellationTokenSource();
             try
             {
-                using var _= new BusyDisposable(value=> isloging = value) ;
+                using var _= new BusyDisposableBool(value=> isloging = value) ;
                 var json = await Api.netWork.PostAsync(LoginUrl + loginUrlGetkey, new { type = 1, noCheckToken = true });
                 _cancellationTokenSource.Token.ThrowIfCancellationRequested();
                 Dictionary<string, object> backjson = JsonConvert.DeserializeObject<Dictionary<string, object>>(json);
@@ -82,7 +82,7 @@ namespace NeteaseMusicAPI
                         case "803":
                             //已授权，获取反馈
                             OutManage?.Invoke("反馈码:" + HeartPackbackjson["code"].ToString() + "，" + HeartPackbackjson["message"].ToString());
-                            Setcookie(HeartPack.headers["Set-Cookie"]);
+                            Setcookie(HeartPack.headers["Set-Cookie"],OutManage,isOk);
                             return;
                     }
                     await Task.Delay(1000, _cancellationTokenSource.Token);
@@ -103,7 +103,7 @@ namespace NeteaseMusicAPI
         /// <summary>
         /// 设置cookie
         /// </summary>
-        private void Setcookie(string cookie, Action<string> OutManage = null)
+        private void Setcookie(string cookie, Action<string> OutManage = null, Action isOk = null)
         {
             OutManage?.Invoke("cookie为" + cookie);
             const string csrf = "__csrf";
@@ -119,6 +119,7 @@ namespace NeteaseMusicAPI
             Cookie.MUSIC_U = musicUString.Substring(0, musicLength);
             Cookie.__remember_me = "true";
             OutManage?.Invoke(Cookie.ToString());
+            isOk?.Invoke();
         }
         #endregion
         #region 二维码绘制
@@ -200,10 +201,10 @@ public class Cookies
             NMTID, MUSIC_U, __csrf, __remember_me);
     }
 }
-class BusyDisposable : IDisposable
+class BusyDisposableBool : IDisposable
 {
     private readonly Action<bool> _callback;
-    public BusyDisposable(Action<bool> callback)
+    public BusyDisposableBool(Action<bool> callback)
     {
         _callback = callback;
         _callback(true);

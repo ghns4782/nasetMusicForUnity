@@ -79,7 +79,7 @@ public class WindowSetting : MonoBehaviour
     {
         _handle = FindWindow(null, Application.productName);
 
-        Header.Clickdown.AddListener(() =>
+        Header.OnClickdown.AddListener(() =>
         {
             DragWindowsMethod();
         });

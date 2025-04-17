@@ -12,7 +12,10 @@ using UnityEngine;
 
 public class betterButton : Button
 {
-    public UnityEvent Clickdown;
+    public UnityEvent OnClickdown;
+    public UnityEvent OnClickEnter;
+    public UnityEvent OnClickExit;
+    public UnityEvent OnClickUp;
     protected override void Awake()
     {
         base.Awake();
@@ -26,6 +29,7 @@ public class betterButton : Button
         {
             DoStateTransition(SelectionState.Highlighted, true);
         }
+        OnClickEnter?.Invoke();
     }
 
     public override void OnPointerExit(PointerEventData eventData)
@@ -35,10 +39,16 @@ public class betterButton : Button
         {
             DoStateTransition(SelectionState.Normal, true);
         }
+        OnClickExit?.Invoke();
     }
     public override void OnPointerDown(PointerEventData eventData)
     {
         base.OnPointerDown(eventData);
-        Clickdown?.Invoke();
+        OnClickdown?.Invoke();
+    }
+    public override void OnPointerUp(PointerEventData eventData)
+    {
+        base.OnPointerUp(eventData);
+        OnClickUp?.Invoke();
     }
 }
